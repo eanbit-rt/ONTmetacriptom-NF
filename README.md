@@ -1,4 +1,4 @@
-# Nextflow-Pipeline-for-ONT-Long-Reads-Metatrascriptomic-data-analysis
+# Nextflow Pipeline for ONT Long Reads Metatrascriptomic data analysis
 
 ## Introduction 
 **ontmetacriptom.nf** is a bioinformatics analysis pipepliene used for the 
