@@ -1,0 +1,6 @@
+2022-07-31 07:45:47	2.1s	happy_keller	OK	f00fac7e4ad257e997d89915b4bd5479	81b9fa77-cd53-4619-816b-638c47053080	nextflow run test.nf
+2022-07-31 08:33:15	-	nasty_sax	-	ab0c4dbcc9c5a6a81efcc7b104aa93ea	0b8aae36-d02c-43f6-975f-6db49916d177	nextflow test.nf
+2022-07-31 08:37:00	-	agitated_celsius	-	03d38b8ddf33ebdad1d0cedf33f1adba	078131b3-0add-440c-8ef9-a4526f1cac8c	nextflow run ../main.nf
+2022-07-31 08:38:02	-	reverent_spence	-	fa725ea86866f1e6591bbd2e0f91f219	f4ddf0de-3b22-475b-b3aa-29028699e53f	nextflow run ../main.nf
+2022-07-31 08:40:13	-	gigantic_watson	-	eb181d1434f2a3bb3f1c1bf2b69cd46e	a49988c6-0c7e-4b7b-a79b-f55928448e1b	nextflow run ../main.nf
+2022-07-31 08:40:44	-	compassionate_swanson	-	6dbe0713b1807b3f3f50166e6ef3690a	5ddc001b-91c8-44b7-8a34-8bacdaf49699	nextflow run ../main.nf

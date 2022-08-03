@@ -1,0 +1,49 @@
+Jul-31 08:40:12.278 [main] DEBUG nextflow.cli.Launcher - $> nextflow run ../main.nf
+Jul-31 08:40:12.400 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 22.04.0
+Jul-31 08:40:12.434 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /home/kebaso/Desktop/Mini_projects/nextflow/data/nextflow/nextflow.config
+Jul-31 08:40:12.438 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/kebaso/Desktop/Mini_projects/nextflow/data/nextflow/nextflow.config
+Jul-31 08:40:12.481 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Jul-31 08:40:13.484 [main] INFO  nextflow.cli.CmdRun - Launching `../main.nf` [gigantic_watson] DSL2 - revision: eb181d1434
+Jul-31 08:40:13.510 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; plugins-dir=/home/kebaso/.nextflow/plugins; core-plugins: nf-amazon@1.7.1,nf-azure@0.13.1,nf-console@1.0.3,nf-ga4gh@1.0.3,nf-google@1.1.4,nf-sqldb@0.4.0,nf-tower@1.4.0
+Jul-31 08:40:13.513 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Jul-31 08:40:13.536 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Jul-31 08:40:13.538 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Jul-31 08:40:13.546 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Jul-31 08:40:13.566 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Jul-31 08:40:13.668 [main] DEBUG nextflow.Session - Session uuid: a49988c6-0c7e-4b7b-a79b-f55928448e1b
+Jul-31 08:40:13.669 [main] DEBUG nextflow.Session - Run name: gigantic_watson
+Jul-31 08:40:13.669 [main] DEBUG nextflow.Session - Executor pool size: 4
+Jul-31 08:40:13.743 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 22.04.0 build 5697
+  Created: 23-04-2022 18:00 UTC (21:00 EAST)
+  System: Linux 5.15.0-41-generic
+  Runtime: Groovy 3.0.10 on OpenJDK 64-Bit Server VM 11.0.13+7-b1751.21
+  Encoding: UTF-8 (UTF-8)
+  Process: 55896@kebaso-HP-Notebook [127.0.1.1]
+  CPUs: 4 - Mem: 5.7 GB (216.2 MB) - Swap: 2 GB (633.7 MB)
+Jul-31 08:40:13.777 [main] DEBUG nextflow.Session - Work-dir: /home/kebaso/Desktop/Mini_projects/nextflow/data/nextflow/modules/work [ext2/ext3]
+Jul-31 08:40:13.778 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/kebaso/Desktop/Mini_projects/nextflow/data/nextflow/bin
+Jul-31 08:40:13.796 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Jul-31 08:40:13.817 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Jul-31 08:40:13.916 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Jul-31 08:40:13.935 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 5; maxThreads: 1000
+Jul-31 08:40:14.204 [main] DEBUG nextflow.Session - Session start invoked
+Jul-31 08:40:14.218 [main] DEBUG nextflow.trace.TraceFileObserver - Flow starting -- trace file: /home/kebaso/Desktop/Mini_projects/nextflow/data/nextflow/modules/Results/pipeline_info/execution_trace.txt
+Jul-31 08:40:14.527 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Jul-31 08:40:14.552 [main] DEBUG nextflow.Session - Session aborted -- Cause: No signature of method: Script_0a70cd6b.addParams() is applicable for argument types: (LinkedHashMap) values: [[outdir:Results]]
+Jul-31 08:40:14.580 [main] ERROR nextflow.cli.Launcher - @unknown
+groovy.lang.MissingMethodException: No signature of method: Script_0a70cd6b.addParams() is applicable for argument types: (LinkedHashMap) values: [[outdir:Results]]
+	at org.codehaus.groovy.runtime.ScriptBytecodeAdapter.unwrap(ScriptBytecodeAdapter.java:70)
+	at org.codehaus.groovy.runtime.callsite.PogoMetaClassSite.callCurrent(PogoMetaClassSite.java:80)
+	at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
+	at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:185)
+	at Script_0a70cd6b.runScript(Script_0a70cd6b:8)
+	at nextflow.script.BaseScript.runDsl2(BaseScript.groovy:170)
+	at nextflow.script.BaseScript.run(BaseScript.groovy:203)
+	at nextflow.script.ScriptParser.runScript(ScriptParser.groovy:220)
+	at nextflow.script.ScriptRunner.run(ScriptRunner.groovy:212)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:120)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:334)
+	at nextflow.cli.Launcher.run(Launcher.groovy:480)
+	at nextflow.cli.Launcher.main(Launcher.groovy:639)
