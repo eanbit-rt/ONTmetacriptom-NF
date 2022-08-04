@@ -11,6 +11,9 @@ and results highly reproducible.
 **ontmetacriptom.nf** pipeline performs by default the following:
 - Sequencing quality control
 - Trimming of reads
+- Sorting of ribosomal RNA and Messenger RNA
+- Clustering of metatranscriptomes
+- Quantification of transcripts and 
 
 
 ## Quick Start
