@@ -13,7 +13,7 @@ and results highly reproducible.
 - Trimming of reads
 - Sorting of ribosomal RNA and Messenger RNA
 - Clustering of metatranscriptomes
-- Quantification of transcripts and 
+- Quantification of transcripts and counting reads mapping to host
 
 
 ## Quick Start
