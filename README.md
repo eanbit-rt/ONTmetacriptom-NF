@@ -1,14 +1,14 @@
 # Nextflow Pipeline for ONT Long Reads Metatrascriptomic Data Analysis
 
 ## Introduction 
-**ontmetacriptom.nf** is a bioinformatics analysis pipepliene used for the 
+**ONTmetacriptom-NF** is a bioinformatics analysis pipepliene used for the 
 analysis of [Oxford Nanopore Technology](https://nanoporetech.com/) 
 long reads metatrascriptomic data. The pipeline is built using [Nextflow](https://www.nextflow.io/), a workflow tool to run tasks across multiple
 compute infrastructure in a very portable manner. It uses [docker](https://www.docker.com/) and [singularity](https://docs.sylabs.io/guides/3.5/user-guide/introduction.html) contantainers making installation inconsequential 
 and results highly reproducible.
 
 ## Pipeline summary
-**ontmetacriptom.nf** pipeline performs by default the following:
+**ONTmetacriptom-NF** pipeline performs by default the following:
 - Sequencing quality control
 - Trimming of reads
 - Sorting of ribosomal RNA and Messenger RNA
