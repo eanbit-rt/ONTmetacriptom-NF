@@ -39,6 +39,8 @@ nextflow run ontmetacriptom.nf
 ## Credits
 We thank the following people for their extensive assistance in the development of this pipeline (in alphabetical order):
 - [Fedrick Kebaso](https://github.com/fredrickkebaso)
+- [Manase Aloo](https://github.com/manasealoo)
+- [Mark Kivumbi](https://github.com/tefer0)
 - [Samuel Oduor](https://github.com/samordil)
 - [Stephen Kuria](https://github.com/sephoh)
 

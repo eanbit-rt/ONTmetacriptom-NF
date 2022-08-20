@@ -1,43 +1,71 @@
-#!/opt/apps/nextflow/22.04.0/bin/nextflow
+#!/usr/bin/env nextflow
 
-//Enable DSL 2 syntax
+/*
+ * Copyright (c) 2022, EANBIT Residential training.
+ * Copyright (c) 2022, Internation Centre of Insect and physiology (icipe).
+ */
+ 
+/* 
+ * 'ONTmetacriptom-NF' - A Nextflow pipeline for ONT long reads 
+ * metatranscriptomic data analysis.
+ * 
+ * This pipeline that reproduces steps from the GATK best practics of SNP 
+ * calling with RNAseq data procedure:
+ * https://software.broadinstitute.org/gatk/guide/article?id=3891
+ * 
+ * Fedrick Kebaso
+ * Samuel Oduor
+ * Stephen Kuria 
+ */
 
-//Import modules here
+/* 
+ * Enable DSL 2 syntax
+ */
+nextflow.enable.dsl = 2
 
-include { nanoqc} from "./modules/qualitycheck.nf" addParams(outdir: "${params.outdir}")
-include { porechop} from "./modules/qualitycheck.nf" addParams(outdir: "${params.outdir}")
-include {concatenate} from "./modules/qualitycheck.nf" addParams(outdir: "${params.outdir}")
-include {SORTMERNA} from "./modules/sortmeRNA.nf" addParams(outdir: "${params.outdir}")
-include {MINIMAP2} from "./modules/minimap_tool.nf" addParams(outdir: "${params.outdir}")
-// set the reads channel
+/*
+ * Define the default parameters
+ */ 
+params.reads = "$projectDir/data/*.gz"
+params.outdir = "ONTresults"
 
-Channel.fromPath( params.reads )
-     .set{ read_ch }
-Channel.fromPath(params.porechop)
-    .set{porechop_ch}
+log.info """\
 
-Channel.fromPath(params.chopped)
-    .set{choppedFiles_ch}
+    O N T m e t a c r i p t o m e - N F  v 0.1 
+    ===========================================
+    reads    : $params.reads
+    results  : $params.outdir
+"""
+.stripIndent()
 
-Channel.fromPath(params.refSeq)
-    .set{refSeq_ch}
-Channel.fromPath(params.sorted_reads)
-    .set{sorted_reads_ch}
+/* 
+ * Import modules 
+ 
+ include { 
+    // Processes, functions and channels
+  } from './modules/metatranscriptome.nf.nf' 
+*/
+
+/* 
+ * main pipeline logic
+ */
+
+ workflow {
+    // Section 1a: Quality Check using nanoqc
 
 
+    /* Section 1b: Generating final report using MultiQC
+     and outputs from 1a
+    */
 
 
-workflow{
-    // Quality check and trimming
-    // process 1a
-    //nanoqc(read_ch)
-    //SORTMERNA(concatenate(porechop(read_ch)))
+    // Section 2: ONT adaptor trimming using porechop tool
 
-    MINIMAP2(refSeq_ch,sorted_reads_ch)
 
-    // porechop_ch.view()
-    //concatenate(porechop_ch.collect())
+    // Section 3a: Downloading rRNA database
+    
 
-    //SORTMERNA(choppedFiles_ch)
-
-}
+    /* Section 3b: Sorting mRNA from trRNA using ref rRNA from 
+    sectiion 3a
+    */
+ }
