@@ -1,4 +1,7 @@
-# Nextflow Pipeline for ONT Long Reads Metatrascriptomic Data Analysis
+# ONTmetacriptom-NF
+A Nextflow Pipeline for Oxford Nanapore Technology(ONT) Long Reads Metatrascriptomic Data Analysis
+
+[![nextflow](https://img.shields.io/badge/nextflow-%E2%89%A520.01.0-brightgreen.svg)](http://nextflow.io)
 
 ## Introduction 
 **ONTmetacriptom-NF** is a bioinformatics analysis pipepliene used for the 
@@ -9,12 +12,21 @@ and results highly reproducible.
 
 ## Pipeline summary
 **ONTmetacriptom-NF** pipeline performs by default the following:
-- Sequencing quality control
-- Trimming of reads
+- FastQ reads quality control
+- Adaptor removal
 - Sorting of ribosomal RNA and Messenger RNA
 - Clustering of metatranscriptomes
 - Quantification of transcripts and counting reads mapping to host
 
+## Components 
+**ONTmetacriptom-NF** uses the following software components and tools: 
+* pycoqc=2.5.2
+* nanoqc
+* porechop
+* isonclust
+* isoncorrect
+* minimap2
+* Nanocount
 
 ## Quick Start
 1. Install [Nexflow](https://www.nextflow.io/docs/latest/getstarted.html#installation) (>=22.04.5)
@@ -23,11 +35,10 @@ and results highly reproducible.
 ```
 nextflow run ontmetacriptom.nf
 ```
+
 ## Credits
 We thank the following people for their extensive assistance in the development of this pipeline (in alphabetical order):
 - [Fedrick Kebaso](https://github.com/fredrickkebaso)
-- [Manase Aloo](https://github.com/manasealoo)
-- [Mark Kivumbi](https://github.com/tefer0)
 - [Samuel Oduor](https://github.com/samordil)
 - [Stephen Kuria](https://github.com/sephoh)
 
@@ -36,3 +47,4 @@ These literatures shed more light on the background theories and concepts that w
 1. Shakya, M., Lo, C. C., & Chain, P. S. G. (2019). Advances and challenges in metatranscriptomic analysis. Frontiers in Genetics, 10(SEP), 904. https://doi.org/10.3389/FGENE.2019.00904/BIBTEX
 2. Sahlin, K., Sipos, B., James, P. L., & Medvedev, P. (2021). Error correction enables use of Oxford Nanopore technology for reference-free    transcriptome analysis. Nature Communications, 12(1). https://doi.org/10.1038/S41467-020-20340-8
 3. Joshua Batson, Gytis Dudas, Eric Haas-Stapleton, Amy L Kistler, Lucy M Li, Phoenix Logan, Kalani Ratnasiri, Hanna Retallack (2021) Single mosquito metatranscriptomics identifies vectors, emerging pathogens and reservoirs in one assay eLife 10:e68353 https://doi.org/10.7554/eLife.68353
+
