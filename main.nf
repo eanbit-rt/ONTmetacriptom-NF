@@ -2,7 +2,7 @@
 
 /*
  * Copyright (c) 2022, EANBIT Residential training.
- * Copyright (c) 2022, Internation Centre of Insect and physiology (icipe).
+ * Copyright (c) 2022, International Centre of Insect Physiology and Ecology (icipe).
  */
  
 /* 
@@ -26,7 +26,7 @@ nextflow.enable.dsl = 2
 /*
  * Define the default parameters
  */ 
-params.reads = "$projectDir/data/*.gz"
+params.reads = "$projectDir/data/barcode*/*.gz"
 params.outdir = "ONTresults"
 
 log.info """\
@@ -40,10 +40,11 @@ log.info """\
 
 /* 
  * Import modules 
- 
+*/
+/*
  include { 
-    // Processes, functions and channels
-  } from './modules/metatranscriptome.nf.nf' 
+    //  QUALITY_NANOQC
+  } from './modules/metatranscriptome.nf' 
 */
 
 /* 
@@ -51,21 +52,30 @@ log.info """\
  */
 
  workflow {
-    // Section 1a: Quality Check using nanoqc
+    // Section 1a: Quality Checking
+  
 
-
-    /* Section 1b: Generating final report using MultiQC
-     and outputs from 1a
+    /* Section 1b: Generating final report using 
+    * outputs from 1a
     */
 
 
-    // Section 2: ONT adaptor trimming using porechop tool
+    // Section 2: ONT adaptor removal
 
 
     // Section 3a: Downloading rRNA database
     
 
-    /* Section 3b: Sorting mRNA from trRNA using ref rRNA from 
-    sectiion 3a
-    */
+    // Section 3b: rRNA fragments filtering
+ 
+    // Section 4: Clustering genes into falmilies
+
+    // Seciton 5: ONT reads error correction
+
+    // Section 6: Alignment to a reference datatabase
+
+    // Section 7: Transcript abundance estimation
+
+    // Calculating the number of mapped reads to each genne
+ 
  }
