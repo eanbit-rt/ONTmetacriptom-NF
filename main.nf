@@ -41,19 +41,22 @@ log.info """\
 /* 
  * Import modules 
 */
-/*
+
  include { 
-    //  QUALITY_NANOQC
+      QUALITY_NANOQC
   } from './modules/metatranscriptome.nf' 
-*/
+
 
 /* 
  * main pipeline logic
  */
 
  workflow {
+   channel.fromPath(params.reads).set{raw_reads_ch}
+
     // Section 1a: Quality Checking
-  
+   QUALITY_NANOQC(raw_reads_ch)
+   QUALITY_NANOQC.out.view()
 
     /* Section 1b: Generating final report using 
     * outputs from 1a
@@ -76,6 +79,6 @@ log.info """\
 
     // Section 7: Transcript abundance estimation
 
-    // Calculating the number of mapped reads to each genne
+    // section 8: Calculating the number of mapped reads to each gene
  
  }

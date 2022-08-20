@@ -2,7 +2,17 @@
  * Process 1A: Checking the quality of the ONT reads 
  * with nanqc
  */
- 
+process QUALITY_NANOQC {
+    input:
+        path fastqFile
+    output:
+        path 'nanoQC_Ouput'
+    
+    script:
+    """
+    nanoQC -o nanoQC_Ouput ${fastqFile} &> /dev/null
+    """
+}
 
  /*
  * Process 1b:  Collecting the outputs of nanoqc process 
@@ -53,7 +63,7 @@
 */
 
 /*
-* Process 8:
+* Process 8
 * HTSeq is a Python package that calculates the number 
 * of mapped reads to each gene.
 */
