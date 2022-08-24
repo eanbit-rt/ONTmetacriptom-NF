@@ -1,3 +1,7 @@
+#!/usr/bin/env nextflow
+
+nextflow.enable.dsl = 2
+
 /*
  * Process 1A: Checking the quality of the ONT reads 
  * with nanqc
@@ -24,19 +28,20 @@ process QUALITY_NANOPLOT {
  /*
  * Process 1b:  Collecting the outputs of nanoqc process 
  * to create a final report using MultiQC tool.
- 
+ */
  process REPORT_MULTIQC {
-    publishDir "${params.outdir}/multiqc", mode:'copy'
-    
+    publishDir "${params.outdir}/multiqcOutput", mode:'copy'
+    tag 'QC Report Aggregate'
+
     input:
     path '*'
     
     output:
-    path 'multiqc_report.html'
+    path 'aggregated_QC_report.html'
     
     script:
     """
-    multiqc . 
+    multiqc --filename aggregated_QC_report.html . 
     """
 }
 

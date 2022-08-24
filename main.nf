@@ -45,7 +45,7 @@ log.info """\
 
  include { 
       QUALITY_NANOPLOT;
-      //REPORT_MULTIQC
+      REPORT_MULTIQC
   } from './modules/metatranscriptome.nf' 
 
 
@@ -67,9 +67,7 @@ log.info """\
     /* Section 1b: Generating final report using 
     * outputs from 1a
     */
-   //REPORT_MULTIQC(QUALITY_NANOQC.out.collect())
-   //REPORT_MULTIQC.out.view()
-
+    REPORT_MULTIQC(QUALITY_NANOPLOT.out.collect())
 
     // Section 2: ONT adaptor removal
 
