@@ -2,7 +2,8 @@
 
 /*
  * Copyright (c) 2022, EANBIT Residential training.
- * Copyright (c) 2022, International Centre of Insect Physiology and Ecology (icipe).
+ * Copyright (c) 2022, International Centre of Insect Physiology 
+ * and Ecology (icipe).
  */
  
 /* 
@@ -43,7 +44,8 @@ log.info """\
 */
 
  include { 
-      QUALITY_NANOQC
+      QUALITY_NANOPLOT;
+      //REPORT_MULTIQC
   } from './modules/metatranscriptome.nf' 
 
 
@@ -52,15 +54,21 @@ log.info """\
  */
 
  workflow {
-   channel.fromPath(params.reads).set{raw_reads_ch}
+    channel
+      .fromPath(params.reads)
+      .map { fastq -> tuple(fastq.parent.name, fastq)}
+      .groupTuple()
+      .set { raw_reads_ch }
+
 
     // Section 1a: Quality Checking
-   QUALITY_NANOQC(raw_reads_ch)
-   QUALITY_NANOQC.out.view()
-
+    QUALITY_NANOPLOT(raw_reads_ch)
+    
     /* Section 1b: Generating final report using 
     * outputs from 1a
     */
+   //REPORT_MULTIQC(QUALITY_NANOQC.out.collect())
+   //REPORT_MULTIQC.out.view()
 
 
     // Section 2: ONT adaptor removal
@@ -80,5 +88,4 @@ log.info """\
     // Section 7: Transcript abundance estimation
 
     // section 8: Calculating the number of mapped reads to each gene
- 
  }

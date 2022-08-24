@@ -27,3 +27,10 @@ conda install -c bioconda minimap2
 pip install git+https://github.com/a-slide/NanoCount.git
 
 pip install git+https://github.com/a-slide/NanoCount.git --upgrade
+
+# Install NanoPlot for checking the read quality of ONT reads
+pip install NanoPlot
+pip install NanoPlot --upgrade # to upgrade to the latest version
+
+# Install Multiqc for generating one report from the NanoPlot output
+pip install multiqc

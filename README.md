@@ -21,7 +21,8 @@ and results highly reproducible.
 ## Components 
 **ONTmetacriptom-NF** uses the following software components and tools: 
 * pycoqc=2.5.2
-* nanoqc
+* NanoPlot
+* mutiqc
 * porechop
 * isonclust
 * isoncorrect

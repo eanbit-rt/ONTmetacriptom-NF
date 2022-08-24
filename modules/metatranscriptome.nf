@@ -2,22 +2,43 @@
  * Process 1A: Checking the quality of the ONT reads 
  * with nanqc
  */
-process QUALITY_NANOQC {
-    input:
-        path fastqFile
-    output:
-        path 'nanoQC_Ouput'
+ 
+process QUALITY_NANOPLOT {
+    publishDir "${params.outdir}/qcOutput", mode: 'copy'
+    tag "Quality Check"
     
+    input:
+      tuple(val(fastqDir),  path(fastqFile))
+    output:
+        path "${fastqDir}"
+
     script:
     """
-    nanoQC -o nanoQC_Ouput ${fastqFile} &> /dev/null
+    NanoPlot -t 2 \
+    -o ${fastqDir} \
+    -p ${fastqDir} \
+    --fastq ${fastqFile}
     """
 }
 
  /*
  * Process 1b:  Collecting the outputs of nanoqc process 
  * to create a final report using MultiQC tool.
- */
+ 
+ process REPORT_MULTIQC {
+    publishDir "${params.outdir}/multiqc", mode:'copy'
+    
+    input:
+    path '*'
+    
+    output:
+    path 'multiqc_report.html'
+    
+    script:
+    """
+    multiqc . 
+    """
+}
 
 
 /*
