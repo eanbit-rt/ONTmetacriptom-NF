@@ -27,14 +27,15 @@ nextflow.enable.dsl = 2
 /*
  * Define the default parameters
  */ 
-params.reads = "$projectDir/data/barcode*/*.gz"
+params.readsDir = "$projectDir/data"
+readsFile = "${params.readsDir}/**/*.gz"
 params.outdir = "ONTresults"
 
 log.info """\
 
     O N T m e t a c r i p t o m e - N F  v 0.1 
     ===========================================
-    reads    : $params.reads
+    readsDir    : $params.readsDir
     results  : $params.outdir
 """
 .stripIndent()
@@ -44,32 +45,32 @@ log.info """\
 */
 
  include { 
-      QUALITY_NANOPLOT;
-      REPORT_MULTIQC
+      NANOPLOT_QC;
+      MULTIQC_REPORT;
+      PORECHOP_TRIM
   } from './modules/metatranscriptome.nf' 
 
 
 /* 
  * main pipeline logic
  */
-
  workflow {
     channel
-      .fromPath(params.reads)
+      .fromPath(readsFile)
       .map { fastq -> tuple(fastq.parent.name, fastq)}
       .groupTuple()
       .set { raw_reads_ch }
 
-
     // Section 1a: Quality Checking
-    QUALITY_NANOPLOT(raw_reads_ch)
+    NANOPLOT_QC(raw_reads_ch)
     
     /* Section 1b: Generating final report using 
     * outputs from 1a
     */
-    REPORT_MULTIQC(QUALITY_NANOPLOT.out.collect())
+    MULTIQC_REPORT(NANOPLOT_QC.out.collect())
 
     // Section 2: ONT adaptor removal
+    PORECHOP_TRIM(params.readsDir)
 
 
     // Section 3a: Downloading rRNA database

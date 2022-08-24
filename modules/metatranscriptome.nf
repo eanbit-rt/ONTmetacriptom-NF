@@ -6,8 +6,7 @@ nextflow.enable.dsl = 2
  * Process 1A: Checking the quality of the ONT reads 
  * with nanqc
  */
- 
-process QUALITY_NANOPLOT {
+process NANOPLOT_QC {
     publishDir "${params.outdir}/qcOutput", mode: 'copy'
     tag "Quality Check"
     
@@ -18,9 +17,10 @@ process QUALITY_NANOPLOT {
 
     script:
     """
-    NanoPlot -t 2 \
-    -o ${fastqDir} \
-    -p ${fastqDir} \
+    NanoPlot \
+    --threads 2 \
+    --outdir ${fastqDir} \
+    --prefix ${fastqDir} \
     --fastq ${fastqFile}
     """
 }
@@ -29,7 +29,7 @@ process QUALITY_NANOPLOT {
  * Process 1b:  Collecting the outputs of nanoqc process 
  * to create a final report using MultiQC tool.
  */
- process REPORT_MULTIQC {
+ process MULTIQC_REPORT {
     publishDir "${params.outdir}/multiqcOutput", mode:'copy'
     tag 'QC Report Aggregate'
 
@@ -45,11 +45,28 @@ process QUALITY_NANOPLOT {
     """
 }
 
-
 /*
-* Process 2: ONT adaptor removal using porechop tool
+* Process 2: ONT adapter removal using porechop tool
 * finds and removing adapters from Oxford Nanopore reads.
 */
+process  PORECHOP_TRIM {
+    publishDir "${params.outdir}", mode: 'copy'
+    tag "Trimming Reads"
+
+  input:
+    path readsDir
+  
+  output:
+    path 'Poreched_Concat_Dir'
+  
+  script:
+  """
+  porechop \
+  --input ${readsDir} \
+  --format fastq \
+  --barcode_dir Poreched_Concat_Dir
+  """
+}
 
 
 /*
