@@ -34,8 +34,7 @@ else
         echo "rRNA Databases availables in ${PWD}/rRNA_databases directory"
         exit 0
     else
-        echo "Unable to download rRNAdatabase!"
-        echo "Check your internet connection"
+        echo "ERROR: Unable to download rRNAdatabase! Check your internet connection"
         exit 1
     fi
 fi

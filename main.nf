@@ -28,15 +28,15 @@ nextflow.enable.dsl = 2
  * Define the default parameters
  */ 
 params.readsDir = "$projectDir/data"
-readsFile = "${params.readsDir}/**/*.gz"
 params.outdir = "ONTresults"
+//readsFile = "${params.readsDir}/**/*.gz"
 
 log.info """\
 
     O N T m e t a c r i p t o m e - N F  v 0.1 
     ===========================================
     readsDir    : $params.readsDir
-    results  : $params.outdir
+    results     : $params.outdir
 """
 .stripIndent()
 
@@ -47,7 +47,8 @@ log.info """\
  include { 
       NANOPLOT_QC;
       MULTIQC_REPORT;
-      PORECHOP_TRIM
+      PORECHOP_TRIM;
+      GET_RNADATABASE
   } from './modules/metatranscriptome.nf' 
 
 
@@ -56,7 +57,7 @@ log.info """\
  */
  workflow {
     channel
-      .fromPath(readsFile)
+      .fromPath("${params.readsDir}/**/*.gz")
       .map { fastq -> tuple(fastq.parent.name, fastq)}
       .groupTuple()
       .set { raw_reads_ch }
@@ -74,8 +75,8 @@ log.info """\
 
 
     // Section 3a: Downloading rRNA database
+    GET_RNADATABASE()
     
-
     // Section 3b: rRNA fragments filtering
  
     // Section 4: Clustering genes into falmilies

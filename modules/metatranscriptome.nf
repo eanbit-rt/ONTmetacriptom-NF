@@ -2,6 +2,25 @@
 
 nextflow.enable.dsl = 2
 
+def rnadb_available( path ) {
+/*
+Searches for 'rRNA_database' dir
+in the project directory and returns
+true when found
+*/
+  myDir = file(path)
+  allFiles = myDir.list()
+
+    for( def file : allFiles ) {
+        if( file == 'rRNA_databases') {
+            return true
+        }
+        else {
+            return false
+            }
+    }
+}
+
 /*
  * Process 1A: Checking the quality of the ONT reads 
  * with nanqc
@@ -11,16 +30,16 @@ process NANOPLOT_QC {
     tag "Quality Check"
     
     input:
-      tuple(val(fastqDir),  path(fastqFile))
+      tuple(val(name),  path(fastqFile))
     output:
-        path "${fastqDir}"
+        path "${name}"
 
     script:
     """
     NanoPlot \
-    --threads 2 \
-    --outdir ${fastqDir} \
-    --prefix ${fastqDir} \
+    --threads 4 \
+    --outdir ${name} \
+    --prefix ${name} \
     --fastq ${fastqFile}
     """
 }
@@ -37,11 +56,11 @@ process NANOPLOT_QC {
     path '*'
     
     output:
-    path 'aggregated_QC_report.html'
+    path 'General_QC_report.html'
     
     script:
     """
-    multiqc --filename aggregated_QC_report.html . 
+    multiqc --filename General_QC_report.html . 
     """
 }
 
@@ -57,17 +76,17 @@ process  PORECHOP_TRIM {
     path readsDir
   
   output:
-    path 'Poreched_Concat_Dir'
+    path 'porechopOuput'
   
   script:
   """
   porechop \
   --input ${readsDir} \
   --format fastq \
-  --barcode_dir Poreched_Concat_Dir
+  --barcode_dir porechopOuput \
+  --discard_unassigned
   """
 }
-
 
 /*
 * Process 3a: Downloading reference rRNA database from
@@ -75,7 +94,24 @@ process  PORECHOP_TRIM {
 * using download_rnadb.sh a custome script in bin 
 * directory
 */
+rnaDatabase = "${projectDir}"
+process GET_RNADATABASE {
+    tag "Searching for rRNA database "
+    publishDir "${projectDir}}", mode: 'copy', overwrite: true
+    
+    output:
+        path 'rRNA_databases'
 
+    script:
+    if (rnadb_available(rnaDatabase))
+        """
+        mkdir rRNA_databases
+        """
+    else
+        """
+        getRNAdb.sh
+        """
+}
 
 /*
 * Process 3b: filter rRNA fragments from metatranscriptomic data
