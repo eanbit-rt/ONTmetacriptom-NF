@@ -49,7 +49,8 @@ log.info """\
       MULTIQC_REPORT;
       PORECHOP_TRIM;
       DOWNLOAD_rRNADATABASE;
-      SORTMERNA
+      SORTMERNA;
+      ISONCLUST
   } from './modules/metatranscriptome.nf' 
 
 
@@ -94,7 +95,11 @@ log.info """\
               //rRNAdatabases,
               PORECHOP_TRIM.out.flatten())
 
-    // Section 4: Clustering genes into falmilies
+    /* 
+    *Section 4: Clustering genes into falmilies using 
+    *isONclust
+    */
+    ISONCLUST(SORTMERNA.out)
 
     // Seciton 5: ONT reads error correction
 

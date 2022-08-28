@@ -126,6 +126,32 @@ process SORTMERNA {
 * Process 4: clustering long transcriptomic reads into gene 
 * families using isOnCLust tool
 */
+process ISONCLUST {
+  publishDir "${params.outdir}/isonclustOuput", mode:'copy'
+  tag "Gene Families Clustering"
+
+  input:
+    path seqReads
+    
+  output:
+    // path "isonclustOutput/*" // Output for the first command
+  path(geneFamilies)
+
+  script:
+    geneFamilies = seqReads.simpleName
+
+  """ 
+  isONclust \
+  --fastq ${seqReads} \
+  --ont --outfolder "isonclustOutput/${geneFamilies}"
+
+  isONclust write_fastq \
+  --clusters "isonclustOutput/${geneFamilies}/final_clusters.tsv" \
+  --fastq ${seqReads} \
+  --outfolder ${geneFamilies} \
+  --N 1
+  """
+}
 
 /*
 * Process 5: error-correcting Oxford Nanopore cDNA reads. 
