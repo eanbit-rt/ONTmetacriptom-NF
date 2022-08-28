@@ -48,7 +48,7 @@ log.info """\
       NANOPLOT_QC;
       MULTIQC_REPORT;
       PORECHOP_TRIM;
-      GET_RNADATABASE;
+      DOWNLOAD_rRNADATABASE;
       SORTMERNA
   } from './modules/metatranscriptome.nf' 
 
@@ -68,11 +68,12 @@ log.info """\
  multiple use of the same values without the channel 
  consuming it
 */
+/*
     channel
     .value(file("${projectDir}/rRNA_databases/*.fasta"))
     .collect()
     .set { rRNAdatabases }
-
+*/
     // Section 1a: Quality Checking
     NANOPLOT_QC(raw_reads_ch)
     
@@ -86,13 +87,11 @@ log.info """\
     //PORECHOP_TRIM.out.flatten().view()
 
     // Section 3a: Download rRNA database. Need internet connection
-    GET_RNADATABASE()
-    // Feed the output below to SORTMERNA
-    //GET_RNADATABASE.out.value().collect()
+    DOWNLOAD_rRNADATABASE()
     
     // Section 3b: rRNA fragments filtering
-    SORTMERNA(//GET_RNADATABASE.out.value().collect(),
-              rRNAdatabases,
+    SORTMERNA(DOWNLOAD_rRNADATABASE.out.collect(),
+              //rRNAdatabases,
               PORECHOP_TRIM.out.flatten())
 
     // Section 4: Clustering genes into falmilies

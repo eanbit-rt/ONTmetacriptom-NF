@@ -2,25 +2,6 @@
 
 nextflow.enable.dsl = 2
 
-def rnadb_available( path ) {
-/*
-Searches for 'rRNA_database' dir
-in the project directory and returns
-true when found
-*/
-  myDir = file(path)
-  allFiles = myDir.list()
-
-    for( def file : allFiles ) {
-        if( file == 'rRNA_databases') {
-            return true
-        }
-        else {
-            return false
-            }
-    }
-}
-
 /*
  * Process 1A: Checking the quality of the ONT reads 
  * with NanoPlot
@@ -72,7 +53,7 @@ process NANOPLOT_QC {
 */
 process  PORECHOP_TRIM {
     publishDir "${params.outdir}", mode: 'copy'
-    tag "Trimming Reads"
+    tag "Trim Reads"
 
   input:
     path readsDir
@@ -96,20 +77,13 @@ process  PORECHOP_TRIM {
 * using download_rnadb.sh a custome script in bin 
 * directory
 */
-rnaDatabase = "${projectDir}"
-process GET_RNADATABASE {
-    tag "Searching for rRNA database "
-    publishDir "${projectDir}", mode: 'copy', overwrite: false
-    
+process DOWNLOAD_rRNADATABASE {
+    tag "Download rRNA ref databases"
+
     output:
-        path 'rRNA_databases'
+        path 'rRNA_databases/*'
 
     script:
-    if (rnadb_available(rnaDatabase))
-        """
-        mkdir rRNA_databases
-        """
-    else
         """
         getRNAdb.sh
         """
@@ -138,6 +112,10 @@ process SORTMERNA {
     --kvdb $filename/kvdb \
     --ref ${rnaDB[0]} \
     --ref ${rnaDB[1]} \
+    --ref ${rnaDB[2]} \
+    --ref ${rnaDB[3]} \
+    --ref ${rnaDB[4]} \
+    --ref ${rnaDB[5]} \
     -reads ${trimmedReadFile} \
     --aligned seqrRNA/${filename}_rRNA \
     --fastx --other seqmRNA/${filename}_mRNA 
@@ -172,3 +150,54 @@ process SORTMERNA {
 * HTSeq is a Python package that calculates the number 
 * of mapped reads to each gene.
 */
+
+// ============== START OF ALTERNATIVE CODES ============
+/*
+def rnadb_available( path ) {
+/*
+Searches for 'rRNA_database' dir
+in the project directory and returns
+true when found. Needs the activation of GET_RNADATABASE
+process
+*/ ///////////////////////////////////////
+
+/*
+  myDir = file(path)
+  allFiles = myDir.list()
+
+    for( def file : allFiles ) {
+        if( file == 'rRNA_databases') {
+            return true
+        }
+        else {
+            return false
+            }
+    }
+}
+*\
+
+/*
+* Process 3a
+* Checks whether there is already an existing rRNA database
+* in the projectDir
+
+rnaDatabase = "${projectDir}"
+process  GET_RNADATABASE {
+    tag "Searching for rRNA database "
+    publishDir "${projectDir}", mode: 'copy', overwrite: false
+    
+    output:
+        path 'rRNA_databases/*'
+
+    script:
+    if (rnadb_available(rnaDatabase))
+        """
+        mkdir rRNA_databases
+        """
+    else
+        """
+        getRNAdb.sh
+        """
+}
+*/
+// ======================= END =========================

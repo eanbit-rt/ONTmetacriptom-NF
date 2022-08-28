@@ -13,9 +13,8 @@ else
     wget \
         --quiet \
         --directory-prefix=rRNA_databases \
-        https://github.com/biocore/sortmerna/archive/2.1b.zip
-    
-    if [ "${$?}" -eq 0 ]; then
+        https://github.com/biocore/sortmerna/archive/2.1b.zip  && \
+    {
         # Decompress folder 
         echo "Unzipping rRNA Databases..."
         unzip -q rRNA_databases/2.1b.zip -d rRNA_databases
@@ -33,8 +32,8 @@ else
         echo "Done"
         echo "rRNA Databases availables in ${PWD}/rRNA_databases directory"
         exit 0
-    else
-        echo "ERROR: Unable to download rRNAdatabase! Check your internet connection"
-        exit 1
-    fi
+    }
+    echo "ERROR: Unable to download rRNA database!"
+    echo "Check your internet connection"
+    exit 1
 fi
