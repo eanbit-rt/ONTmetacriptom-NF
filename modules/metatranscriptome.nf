@@ -23,7 +23,9 @@ true when found
 
 /*
  * Process 1A: Checking the quality of the ONT reads 
- * with nanqc
+ * with NanoPlot
+ * Takes a list of sequences per barcode and processes 
+ * then to produce single reports/stats per barcode
  */
 process NANOPLOT_QC {
     publishDir "${params.outdir}/qcOutput", mode: 'copy'
@@ -76,7 +78,7 @@ process  PORECHOP_TRIM {
     path readsDir
   
   output:
-    path 'porechopOuput'
+    path 'porechopOuput/*.fastq'
   
   script:
   """
@@ -97,7 +99,7 @@ process  PORECHOP_TRIM {
 rnaDatabase = "${projectDir}"
 process GET_RNADATABASE {
     tag "Searching for rRNA database "
-    publishDir "${projectDir}}", mode: 'copy', overwrite: true
+    publishDir "${projectDir}", mode: 'copy', overwrite: false
     
     output:
         path 'rRNA_databases'
@@ -117,6 +119,30 @@ process GET_RNADATABASE {
 * Process 3b: filter rRNA fragments from metatranscriptomic data
 * using the downloaded rRNA database
 */
+process SORTMERNA {
+    publishDir "${params.outdir}/sortmernaOutput", mode:'copy'
+    tag 'Sorting'
+  input:
+    path rnaDB
+    path trimmedReadFile
+  
+  output:
+    path "seqmRNA/*"
+  
+  script:
+    filename = trimmedReadFile.simpleName
+
+  """
+    sortmerna \
+    --workdir $PWD/work \
+    --kvdb $filename/kvdb \
+    --ref ${rnaDB[0]} \
+    --ref ${rnaDB[1]} \
+    -reads ${trimmedReadFile} \
+    --aligned seqrRNA/${filename}_rRNA \
+    --fastx --other seqmRNA/${filename}_mRNA 
+  """
+  }
 
 /*
 * Process 4: clustering long transcriptomic reads into gene 

@@ -48,7 +48,8 @@ log.info """\
       NANOPLOT_QC;
       MULTIQC_REPORT;
       PORECHOP_TRIM;
-      GET_RNADATABASE
+      GET_RNADATABASE;
+      SORTMERNA
   } from './modules/metatranscriptome.nf' 
 
 
@@ -62,6 +63,16 @@ log.info """\
       .groupTuple()
       .set { raw_reads_ch }
 
+/*
+ the channel is converted into value channell to enable 
+ multiple use of the same values without the channel 
+ consuming it
+*/
+    channel
+    .value(file("${projectDir}/rRNA_databases/*.fasta"))
+    .collect()
+    .set { rRNAdatabases }
+
     // Section 1a: Quality Checking
     NANOPLOT_QC(raw_reads_ch)
     
@@ -72,13 +83,18 @@ log.info """\
 
     // Section 2: ONT adaptor removal
     PORECHOP_TRIM(params.readsDir)
+    //PORECHOP_TRIM.out.flatten().view()
 
-
-    // Section 3a: Downloading rRNA database
+    // Section 3a: Download rRNA database. Need internet connection
     GET_RNADATABASE()
+    // Feed the output below to SORTMERNA
+    //GET_RNADATABASE.out.value().collect()
     
     // Section 3b: rRNA fragments filtering
- 
+    SORTMERNA(//GET_RNADATABASE.out.value().collect(),
+              rRNAdatabases,
+              PORECHOP_TRIM.out.flatten())
+
     // Section 4: Clustering genes into falmilies
 
     // Seciton 5: ONT reads error correction
