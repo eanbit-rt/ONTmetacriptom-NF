@@ -29,7 +29,6 @@ nextflow.enable.dsl = 2
  */ 
 params.readsDir = "$projectDir/data"
 params.outdir = "ONTresults"
-//readsFile = "${params.readsDir}/**/*.gz"
 
 log.info """\
 
@@ -50,7 +49,8 @@ log.info """\
       PORECHOP_TRIM;
       DOWNLOAD_rRNADATABASE;
       SORTMERNA;
-      ISONCLUST
+      ISONCLUST;
+      RUN_ISONCORRECT
   } from './modules/metatranscriptome.nf' 
 
 
@@ -82,18 +82,19 @@ log.info """\
     * outputs from 1a
     */
     MULTIQC_REPORT(NANOPLOT_QC.out.collect())
-
+  
     // Section 2: ONT adaptor removal
     PORECHOP_TRIM(params.readsDir)
     //PORECHOP_TRIM.out.flatten().view()
 
     // Section 3a: Download rRNA database. Need internet connection
     DOWNLOAD_rRNADATABASE()
-    
+
     // Section 3b: rRNA fragments filtering
     SORTMERNA(DOWNLOAD_rRNADATABASE.out.collect(),
               //rRNAdatabases,
-              PORECHOP_TRIM.out.flatten())
+              PORECHOP_TRIM.out.flatten()
+              )
 
     /* 
     *Section 4: Clustering genes into falmilies using 
@@ -102,6 +103,9 @@ log.info """\
     ISONCLUST(SORTMERNA.out)
 
     // Seciton 5: ONT reads error correction
+    RUN_ISONCORRECT(ISONCLUST.out
+    .map{ dirpath -> tuple(dirpath.name, dirpath) }
+    )
 
     // Section 6: Alignment to a reference datatabase
 

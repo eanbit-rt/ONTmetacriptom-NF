@@ -159,6 +159,28 @@ process ISONCLUST {
 * exon variation within reads using isOnCorrect tool
 */
 
+process RUN_ISONCORRECT {
+  publishDir "${params.outdir}/correctedReads", mode:'copy'
+  tag "Error correctiong"
+
+  input:
+    tuple val(dirName), path(readsDir)
+  
+  output:
+    path "${dirName}_corrected"
+
+  
+  script:
+  """
+  run_isoncorrect \
+  --fastq_folder ${readsDir} \
+  --t 4 \
+  --k 13 \
+  --w 20 \
+  --outfolder "${dirName}_corrected"
+  """
+}
+
 /*
 *Process 6: 
 * minimap2

@@ -34,7 +34,7 @@ and results highly reproducible.
 2. Install any of [Docker](https://docs.docker.com/engine/install/) or [Singularity](https://singularity-tutorial.github.io/01-installation/)
 3. Download the pipeline and test it on a minimal dataset in a single command:
 ```
-nextflow run ontmetacriptom.nf
+nextflow run main.nf --readsDir '/path/Dir_Containing_Barcodes'
 ```
 
 ## Credits
