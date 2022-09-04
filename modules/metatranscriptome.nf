@@ -134,8 +134,7 @@ process ISONCLUST {
     path seqReads
     
   output:
-    // path "isonclustOutput/*" // Output for the first command
-  path(geneFamilies)
+  path "${geneFamilies}"
 
   script:
     geneFamilies = seqReads.simpleName
@@ -158,18 +157,16 @@ process ISONCLUST {
 * It is designed to handle highly variable coverage and 
 * exon variation within reads using isOnCorrect tool
 */
-
-process RUN_ISONCORRECT {
+process ISONCORRECT {
   publishDir "${params.outdir}/correctedReads", mode:'copy'
-  tag "Error correctiong"
+  tag "Reads Error correction"
 
   input:
     tuple val(dirName), path(readsDir)
   
   output:
-    path "${dirName}_corrected"
+    path "${dirName}_corrected_reads.fastq"
 
-  
   script:
   """
   run_isoncorrect \
@@ -178,7 +175,10 @@ process RUN_ISONCORRECT {
   --k 13 \
   --w 20 \
   --outfolder "${dirName}_corrected"
-  """
+
+  cat ${dirName}_corrected/*/corrected_reads.fastq \
+  > "${dirName}_corrected_reads.fastq"
+"""
 }
 
 /*

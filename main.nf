@@ -50,7 +50,7 @@ log.info """\
       DOWNLOAD_rRNADATABASE;
       SORTMERNA;
       ISONCLUST;
-      RUN_ISONCORRECT
+      ISONCORRECT
   } from './modules/metatranscriptome.nf' 
 
 
@@ -69,12 +69,12 @@ log.info """\
  multiple use of the same values without the channel 
  consuming it
 */
-/*
+
     channel
     .value(file("${projectDir}/rRNA_databases/*.fasta"))
     .collect()
     .set { rRNAdatabases }
-*/
+
     // Section 1a: Quality Checking
     NANOPLOT_QC(raw_reads_ch)
     
@@ -88,11 +88,11 @@ log.info """\
     //PORECHOP_TRIM.out.flatten().view()
 
     // Section 3a: Download rRNA database. Need internet connection
-    DOWNLOAD_rRNADATABASE()
+    //DOWNLOAD_rRNADATABASE()
 
     // Section 3b: rRNA fragments filtering
-    SORTMERNA(DOWNLOAD_rRNADATABASE.out.collect(),
-              //rRNAdatabases,
+    SORTMERNA(//DOWNLOAD_rRNADATABASE.out.collect(),
+              rRNAdatabases,
               PORECHOP_TRIM.out.flatten()
               )
 
@@ -102,13 +102,13 @@ log.info """\
     */
     ISONCLUST(SORTMERNA.out)
 
-    // Seciton 5: ONT reads error correction
-    RUN_ISONCORRECT(ISONCLUST.out
+    //Seciton 5: ONT reads error correction
+    ISONCORRECT(ISONCLUST.out
     .map{ dirpath -> tuple(dirpath.name, dirpath) }
     )
 
     // Section 6: Alignment to a reference datatabase
-
+    ISONCORRECT.out.view()
     // Section 7: Transcript abundance estimation
 
     // section 8: Calculating the number of mapped reads to each gene

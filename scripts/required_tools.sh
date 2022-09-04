@@ -1,11 +1,20 @@
 #!/usr/bin/env bash
 
+# Create a conda env
+conda create -n mini-proj python=3 pip
+
 # Install pycoqc for checking ont read quality
-conda install -c aleg -c anaconda -c bioconda -c conda-forge pycoqc=2.5.2
+#conda install -c aleg -c anaconda -c bioconda -c conda-forge pycoqc=2.5.2
 
 # Install nanoqc for nanopore quality check
 #Investigate nucleotide composition and base quality.
-conda install -c bioconda nanoqc
+#conda install -c bioconda nanoqc 
+# Install NanoPlot for checking the read quality of ONT reads
+pip install NanoPlot
+pip install NanoPlot --upgrade # to upgrade to the latest version
+
+# Install Multiqc for generating one report from the NanoPlot output
+pip install multiqc
 
 # Install porechop for trimming ont adapters
 conda install -c bioconda porechop
@@ -17,7 +26,9 @@ conda install -c bioconda sortmerna
 conda install -c bioconda isonclust
 
 # Install isoncorrect 
-conda install -c bioconda isoncorrect
+#Install isONcorrect and its dependency `spoa`.
+pip install isONcorrect
+conda install -c bioconda spoa
 
 # Install 
 conda install -c bioconda minimap2
@@ -27,10 +38,3 @@ conda install -c bioconda minimap2
 pip install git+https://github.com/a-slide/NanoCount.git
 
 pip install git+https://github.com/a-slide/NanoCount.git --upgrade
-
-# Install NanoPlot for checking the read quality of ONT reads
-pip install NanoPlot
-pip install NanoPlot --upgrade # to upgrade to the latest version
-
-# Install Multiqc for generating one report from the NanoPlot output
-pip install multiqc
