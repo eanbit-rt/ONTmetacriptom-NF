@@ -38,5 +38,13 @@ The scripts for all the above tools developed can be accessed here [scripts](htt
 The workflow developed generated below DAG.
 
 
+### Containerization and Scalling 
+
+Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. The docker file generated with all workflow tools is located [here](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
+
+
+
+
+
 
 
