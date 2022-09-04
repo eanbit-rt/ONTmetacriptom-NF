@@ -1,4 +1,4 @@
-# EANBiT 2022 Residential Training Mini Project Report
+# EANBiT 2022 Residential Training Mini Project Report.
 ## Project: Nextflow Pipeline for ONT Long Reads Metatrascriptomic data (ONTmetacriptom-NF).
 ### Introduction
 
@@ -11,7 +11,7 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 - To develop a standardised workflow for Oxford Nanopore reads using nextflow workflow language.
 - Expand the workflow to make use of containers and scale to the cloud.
 
-### Tools incorporated in the workflow.
+### Tools incorporated in the workflow
 
  - **Nanoqc -**  Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC. For more information check [nanoqc](https://github.com/wdecoster/nanoQC).
 
@@ -30,5 +30,7 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 - **Minimap2 -** Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA sequences against a large reference database. Its described here [minimap2](https://github.com/lh3/minimap2).
 
 - **NanoCount -** NanoCount estimates transcript abundances from Oxford Nanopore direct RNA sequencing datasets, using filtering steps and an expectation-maximization approach (similar to RSEM, Kallisto, Salmon, etc) to handle the uncertainty of multi-mapping reads. More information here [NanoCount](https://github.com/a-slide/NanoCount).
+
+
 
 
