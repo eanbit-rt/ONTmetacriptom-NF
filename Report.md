@@ -15,8 +15,10 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 **Nanoqc -**  Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC. For more information check [nanoqc](https://github.com/wdecoster/nanoQC).
 
-**NanoPlot-** Plotting tool for long read sequencing data and alignments.Details can be accesed here [NanoPlot](https://github.com/wdecoster/NanoPlot).
+**NanoPlot -** Plotting tool for long read sequencing data and alignments.Details can be accesed here [NanoPlot](https://github.com/wdecoster/NanoPlot).
 
-**Multiqc-** MultiQC searches a given directory for analysis logs and compiles a HTML report. It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.More information available here [multiqc](https://github.com/ewels/MultiQC).
+**Multiqc -** MultiQC searches a given directory for analysis logs and compiles a HTML report. It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.More information available here [multiqc](https://github.com/ewels/MultiQC).
+
+**Porechop -** Porechop is a tool for finding and removing adapters from Oxford Nanopore reads. It's described in details here [porechop](https://github.com/rrwick/Porechop).
 
 
