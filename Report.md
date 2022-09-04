@@ -33,7 +33,7 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 The scripts for all the above tools developed can be accessed here [scripts](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/scripts).
 
-# Direct Acyclic Graph (DAG)
+### Direct Acyclic Graph (DAG)
 
 The workflow developed generated below DAG.
 
