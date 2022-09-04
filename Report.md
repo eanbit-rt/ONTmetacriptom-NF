@@ -25,4 +25,8 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 **isONclust -** isONclust is a tool for clustering either PacBio Iso-Seq reads, or Oxford Nanopore reads into clusters, where each cluster represents all reads that came from a gene. Output is a tsv file with each read assigned to a cluster-ID. Detailed information is available here [isONclust](https://github.com/ksahlin/isONclust).
 
+**isONcorrect -** isONcorrect is a tool for error-correcting Oxford Nanopore cDNA reads. It is designed to handle highly variable coverage and exon variation within reads and achieves about a 0.5-1% median error rate after correction. It leverages regions shared between reads from different isoforms achieve low error rates even for low abundant transcripts. Here is more information [isONcorrect](https://github.com/ksahlin/isONcorrect).
+
+**Minimap2 -** Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA sequences against a large reference database. Its described here [minimap2](https://github.com/lh3/minimap2).
+
 
