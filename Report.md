@@ -31,6 +31,12 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 - **NanoCount -** NanoCount estimates transcript abundances from Oxford Nanopore direct RNA sequencing datasets, using filtering steps and an expectation-maximization approach (similar to RSEM, Kallisto, Salmon, etc) to handle the uncertainty of multi-mapping reads. More information here [NanoCount](https://github.com/a-slide/NanoCount).
 
+The scripts for all the above tools developed can be accessed here [scripts](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/scripts).
+
+# Direct Acyclic Graph (DAG)
+
+The workflow developed generated below DAG.
+
 
 
 
