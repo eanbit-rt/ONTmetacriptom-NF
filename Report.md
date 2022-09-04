@@ -29,4 +29,6 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 **Minimap2 -** Minimap2 is a versatile sequence alignment program that aligns DNA or mRNA sequences against a large reference database. Its described here [minimap2](https://github.com/lh3/minimap2).
 
+**NanoCount -** NanoCount estimates transcript abundances from Oxford Nanopore direct RNA sequencing datasets, using filtering steps and an expectation-maximization approach (similar to RSEM, Kallisto, Salmon, etc) to handle the uncertainty of multi-mapping reads. More information here [NanoCount](https://github.com/a-slide/NanoCount).
+
 
