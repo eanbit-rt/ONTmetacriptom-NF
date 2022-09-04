@@ -13,8 +13,6 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 ### Tools incorporated in the workflow
 
- - **Nanoqc -**  Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC. For more information check [nanoqc](https://github.com/wdecoster/nanoQC).
-
 - **NanoPlot -** Plotting tool for long read sequencing data and alignments.Details can be accesed here [NanoPlot](https://github.com/wdecoster/NanoPlot).
 
 - **Multiqc -** MultiQC searches a given directory for analysis logs and compiles a HTML report. It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.More information available here [multiqc](https://github.com/ewels/MultiQC).
@@ -31,7 +29,7 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 - **NanoCount -** NanoCount estimates transcript abundances from Oxford Nanopore direct RNA sequencing datasets, using filtering steps and an expectation-maximization approach (similar to RSEM, Kallisto, Salmon, etc) to handle the uncertainty of multi-mapping reads. More information here [NanoCount](https://github.com/a-slide/NanoCount).
 
-The scripts for all the above tools developed can be accessed here [scripts](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/scripts).
+The bash scripts for all the above tools can be accessed here [scripts](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/scripts).
 
 ### Direct Acyclic Graph (DAG)
 
@@ -41,6 +39,7 @@ The workflow developed generated below DAG.
 ### Containerization and Scalling 
 
 Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. The docker file generated with all workflow tools is located [here](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
+The docker image built can be accesed here [docker](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
 
 
 
