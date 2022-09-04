@@ -23,4 +23,6 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 **SortMeRNA -** SortMeRNA is a local sequence alignment tool for filtering, mapping and clustering. Details are given here [sortmerna](https://github.com/biocore/sortmerna). 
 
+**isONclust -** isONclust is a tool for clustering either PacBio Iso-Seq reads, or Oxford Nanopore reads into clusters, where each cluster represents all reads that came from a gene. Output is a tsv file with each read assigned to a cluster-ID. Detailed information is available here [isONclust](https://github.com/ksahlin/isONclust).
+
 
