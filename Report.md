@@ -21,4 +21,6 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 **Porechop -** Porechop is a tool for finding and removing adapters from Oxford Nanopore reads. It's described in details here [porechop](https://github.com/rrwick/Porechop).
 
+**SortMeRNA -** SortMeRNA is a local sequence alignment tool for filtering, mapping and clustering. Details are given here [sortmerna](https://github.com/biocore/sortmerna). 
+
 
