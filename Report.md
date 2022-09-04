@@ -35,6 +35,7 @@ The bash scripts for all the above tools can be accessed here [scripts](https://
 
 The workflow developed generated below DAG.
 
+![DAG-graph](https://user-images.githubusercontent.com/60787991/188307024-be4152d7-e84e-4ac0-96d3-90bc47e4a9d7.jpg)
 
 ### Containerization and Scalling 
 
