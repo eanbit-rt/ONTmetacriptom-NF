@@ -13,7 +13,7 @@ In this project we set out to develop a pipeline for Oxford Nanopore reads parti
 
 ### Tools incorporated in the workflow.
 
-**Nanoqc -**  Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC. For more information [nanoqc](https://github.com/wdecoster/nanoQC)
+**Nanoqc -**  Quality control tools for long read sequencing data aiming to replicate some of the plots made by fastQC. For more information check [nanoqc](https://github.com/wdecoster/nanoQC).
 
 
 
