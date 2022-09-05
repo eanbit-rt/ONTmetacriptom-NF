@@ -216,13 +216,13 @@ process MINIMAP2 {
     path(refSeqIndexed)
 
     output:
-    path "*_idx.bai"
+    path "*_sorted.bam"
 
     script:
     filename = correctedReads.simpleName
 
-    """
-    minimap2 \
+    /*
+     minimap2 \
     -ax splice \
     -k13 ${refSeqIndexed} ${correctedReads} \
     -o ${filename}.aln.sam
@@ -230,7 +230,16 @@ process MINIMAP2 {
     samtools view -bS ${filename}.aln.sam > ${filename}.bam 
     samtools sort ${filename}.bam > "${filename}_mapped.bam"
     samtools sort ${filename}_mapped.bam > "${filename}_sorted.bam"
-    samtools index ${filename}_sorted.bam "${filename}_idx.bai"
+    samtools index ${filename}_sorted.bam "${filename}_idx.bam
+    */
+    """
+    minimap2 \
+    -t 4 \
+    -ax map-ont \
+    -p 0 \
+    -N 10 ${refSeqIndexed} ${correctedReads} | 
+    samtools view -bh | 
+    samtools sort > "${filename}_sorted.bam"
     """
 }
 
@@ -238,7 +247,27 @@ process MINIMAP2 {
 * Process 7:
 * Estimates transcript abundances using NanoCount
 */
+process NANOCOUNT {
+  tag "transcripts count"
+      publishDir "${params.outdir}/nanoCount", mode:'copy'
 
+  input:
+    path indexed_bai_file
+
+  output:
+    path "*.tsv"
+
+  script:
+    filename = indexed_bai_file.simpleName
+
+  """
+  NanoCount \
+  --alignment_file ${indexed_bai_file} \
+  --count_file "${filename}.trascripts.tsv" \
+  --sec_scoring_threshold 0.8 \
+  --verbose
+  """
+}
 /*
 * Process 8
 * HTSeq is a Python package that calculates the number 

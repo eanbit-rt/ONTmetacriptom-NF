@@ -53,7 +53,8 @@ log.info """\
       ISONCLUST;
       ISONCORRECT;
       REFSEQ_GCF_016920715_DOWNLOAD;
-      MINIMAP2
+      MINIMAP2;
+      NANOCOUNT
   } from './modules/metatranscriptome.nf' 
 
 
@@ -121,8 +122,9 @@ log.info """\
     MINIMAP2(ISONCORRECT.out, 
             REFSEQ_GCF_016920715_DOWNLOAD.out
             )
-    MINIMAP2.out.view()
     // Section 7: Transcript abundance estimation
+    NANOCOUNT(MINIMAP2.out)
+    //NANOCOUNT.out.view()
 
     // section 8: Calculating the number of mapped reads to each gene
  }
