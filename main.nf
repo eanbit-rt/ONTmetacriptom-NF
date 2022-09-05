@@ -52,7 +52,8 @@ log.info """\
       SORTMERNA;
       ISONCLUST;
       ISONCORRECT;
-      REFSEQ_GCF_016920715_DOWNLOAD
+      REFSEQ_GCF_016920715_DOWNLOAD;
+      MINIMAP2
   } from './modules/metatranscriptome.nf' 
 
 
@@ -112,15 +113,15 @@ log.info """\
     ISONCORRECT(ISONCLUST.out
     .map{ dirpath -> tuple(dirpath.name, dirpath) }
     )
-    //ISONCORRECT.out.view()
 
     // Section 6a: Download a reference datatabase
     REFSEQ_GCF_016920715_DOWNLOAD()
-    //REFSEQ_GCF_016920715_DOWNLOAD.out.view()
 
     // Section 6: Alignment to a reference datatabase
-   // MINIMAP2(ISONCORRECT.out, refSeq_ch)
-    //ISONCORRECT.out.view()
+    MINIMAP2(ISONCORRECT.out, 
+            REFSEQ_GCF_016920715_DOWNLOAD.out
+            )
+    MINIMAP2.out.view()
     // Section 7: Transcript abundance estimation
 
     // section 8: Calculating the number of mapped reads to each gene

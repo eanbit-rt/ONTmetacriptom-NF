@@ -187,13 +187,13 @@ process ISONCORRECT {
 * sequence alignment program that aligns DNA or mRNA 
 * sequences against a large reference database
 */
-// Downloading the reference genome sequence for minimap2
+// 6a: Downloading the reference genome sequence for minimap2
 process REFSEQ_GCF_016920715_DOWNLOAD {
     publishDir "${params.outdir}/refSeqGenome", mode:'copy'
     tag "Reference Seq Genome Downlooad"
 
     output:
-        path 'GCF_016920715.1_*'
+        path 'GCF_016920715.1*.idx'
 
     script:
         """
@@ -205,6 +205,33 @@ process REFSEQ_GCF_016920715_DOWNLOAD {
         minimap2 \
         -d GCF_016920715.1_AaraD3_genomic.idx GCF_016920715.1_*
         """
+}
+// 6b: Mapping to the reference genome sequence
+process MINIMAP2 {
+  tag "Mapping to ref genome"
+    publishDir "${params.outdir}/minimapOuput", mode:'copy'
+
+    input:
+    path correctedReads
+    path(refSeqIndexed)
+
+    output:
+    path "*_idx.bai"
+
+    script:
+    filename = correctedReads.simpleName
+
+    """
+    minimap2 \
+    -ax splice \
+    -k13 ${refSeqIndexed} ${correctedReads} \
+    -o ${filename}.aln.sam
+
+    samtools view -bS ${filename}.aln.sam > ${filename}.bam 
+    samtools sort ${filename}.bam > "${filename}_mapped.bam"
+    samtools sort ${filename}_mapped.bam > "${filename}_sorted.bam"
+    samtools index ${filename}_sorted.bam "${filename}_idx.bai"
+    """
 }
 
 /*
