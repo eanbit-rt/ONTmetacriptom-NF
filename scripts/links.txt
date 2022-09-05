@@ -1,0 +1,11 @@
+# nanopore raw reads processing pipeline
+https://git.ummisco.fr/pipelines/nanopore
+
+# How to automatically download fasta files from ncbi
+https://angus.readthedocs.io/en/2014/howe-ncbi.html
+
+# Polishing nanopore reads
+https://nanopolish.readthedocs.io/en/latest/quickstart_consensus.html
+
+# ncbi refSeq genomes download
+https://www.metagenomics.wiki/tools/fastq/ncbi-ftp-genome-download

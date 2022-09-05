@@ -187,6 +187,25 @@ process ISONCORRECT {
 * sequence alignment program that aligns DNA or mRNA 
 * sequences against a large reference database
 */
+// Downloading the reference genome sequence for minimap2
+process REFSEQ_GCF_016920715_DOWNLOAD {
+    publishDir "${params.outdir}/refSeqGenome", mode:'copy'
+    tag "Reference Seq Genome Downlooad"
+
+    output:
+        path 'GCF_016920715.1_*'
+
+    script:
+        """
+        wget \
+        https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/016/920/715/GCF_016920715.1_AaraD3/GCF_016920715.1_AaraD3_genomic.fna.gz
+        
+        gunzip GCF_016920715.1_AaraD3_genomic.fna.gz
+
+        minimap2 \
+        -d GCF_016920715.1_AaraD3_genomic.idx GCF_016920715.1_*
+        """
+}
 
 /*
 * Process 7:

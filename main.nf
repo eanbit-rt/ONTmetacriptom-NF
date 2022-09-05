@@ -29,6 +29,7 @@ nextflow.enable.dsl = 2
  */ 
 params.readsDir = "$projectDir/data"
 params.outdir = "ONTresults"
+params.refGenome = ''
 
 log.info """\
 
@@ -50,7 +51,8 @@ log.info """\
       DOWNLOAD_rRNADATABASE;
       SORTMERNA;
       ISONCLUST;
-      ISONCORRECT
+      ISONCORRECT;
+      REFSEQ_GCF_016920715_DOWNLOAD
   } from './modules/metatranscriptome.nf' 
 
 
@@ -69,12 +71,16 @@ log.info """\
  multiple use of the same values without the channel 
  consuming it
 */
-
     channel
     .value(file("${projectDir}/rRNA_databases/*.fasta"))
     .collect()
     .set { rRNAdatabases }
 
+/*
+    channel
+    .value(file("${params.refGenome}"))
+    .set { refSeq_ch }
+*/
     // Section 1a: Quality Checking
     NANOPLOT_QC(raw_reads_ch)
     
@@ -106,9 +112,15 @@ log.info """\
     ISONCORRECT(ISONCLUST.out
     .map{ dirpath -> tuple(dirpath.name, dirpath) }
     )
+    //ISONCORRECT.out.view()
+
+    // Section 6a: Download a reference datatabase
+    REFSEQ_GCF_016920715_DOWNLOAD()
+    //REFSEQ_GCF_016920715_DOWNLOAD.out.view()
 
     // Section 6: Alignment to a reference datatabase
-    ISONCORRECT.out.view()
+   // MINIMAP2(ISONCORRECT.out, refSeq_ch)
+    //ISONCORRECT.out.view()
     // Section 7: Transcript abundance estimation
 
     // section 8: Calculating the number of mapped reads to each gene
