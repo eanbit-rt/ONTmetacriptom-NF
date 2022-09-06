@@ -35,16 +35,9 @@ The bash scripts for all the above tools can be accessed here [scripts](https://
 
 The workflow developed generated below DAG.
 
-![DAG-graph](https://user-images.githubusercontent.com/60787991/188307024-be4152d7-e84e-4ac0-96d3-90bc47e4a9d7.jpg)
+![DAG-graph](https://github.com/eanbit-rt/ONTmetacriptom-NF/blob/main/images/ONTworkflow.png)
 
 ### Containerization and Scalling 
 
 Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. The docker file generated with all workflow tools is located [here](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
 The docker image built can be accesed here [docker](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
-
-
-
-
-
-
-
