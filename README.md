@@ -34,14 +34,17 @@ and results highly reproducible.
 2. Install any of [Docker](https://docs.docker.com/engine/install/) or [Singularity](https://singularity-tutorial.github.io/01-installation/)
 3. Download the pipeline and test it on a minimal dataset in a single command:
 ```
-nextflow run main.nf --readsDir '/path/Dir_Containing_Barcodes'
+nextflow run main.nf
+```
+
+4. To run the pipeline with your dataset, use the command:
+```
+nextflow run main.nf --readsDir '/path/to/dir_Containing_your_barcodes'
 ```
 
 ## Credits
 We thank the following people for their extensive assistance in the development of this pipeline (in alphabetical order):
 - [Fedrick Kebaso](https://github.com/fredrickkebaso)
-- [Manase Aloo](https://github.com/manasealoo)
-- [Mark Kivumbi](https://github.com/tefer0)
 - [Samuel Oduor](https://github.com/samordil)
 - [Stephen Kuria](https://github.com/sephoh)
 
@@ -50,4 +53,3 @@ These literatures shed more light on the background theories and concepts that w
 1. Shakya, M., Lo, C. C., & Chain, P. S. G. (2019). Advances and challenges in metatranscriptomic analysis. Frontiers in Genetics, 10(SEP), 904. https://doi.org/10.3389/FGENE.2019.00904/BIBTEX
 2. Sahlin, K., Sipos, B., James, P. L., & Medvedev, P. (2021). Error correction enables use of Oxford Nanopore technology for reference-free    transcriptome analysis. Nature Communications, 12(1). https://doi.org/10.1038/S41467-020-20340-8
 3. Joshua Batson, Gytis Dudas, Eric Haas-Stapleton, Amy L Kistler, Lucy M Li, Phoenix Logan, Kalani Ratnasiri, Hanna Retallack (2021) Single mosquito metatranscriptomics identifies vectors, emerging pathogens and reservoirs in one assay eLife 10:e68353 https://doi.org/10.7554/eLife.68353
-

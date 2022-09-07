@@ -9,8 +9,7 @@ nextflow.enable.dsl = 2
  * then to produce single reports/stats per barcode
  */
 process NANOPLOT_QC {
-    publishDir "${params.outdir}/qcOutput", mode: 'copy'
-    tag "Quality Check"
+    tag "Pre-trim Quality Check"
     
     input:
       tuple(val(name),  path(fastqFile))
@@ -32,18 +31,18 @@ process NANOPLOT_QC {
  * to create a final report using MultiQC tool.
  */
  process MULTIQC_REPORT {
-    publishDir "${params.outdir}/multiqcOutput", mode:'copy'
-    tag 'QC Report Aggregate'
+    publishDir "${params.outdir}", mode:'copy'
+    tag 'Pre-trim QC Report Aggregate'
 
     input:
     path '*'
     
     output:
-    path 'General_QC_report.html'
+    path 'Pre_Trim_QC_report.html'
     
     script:
     """
-    multiqc --filename General_QC_report.html . 
+    multiqc --filename Pre_Trim_QC_report.html . 
     """
 }
 
@@ -52,7 +51,6 @@ process NANOPLOT_QC {
 * finds and removing adapters from Oxford Nanopore reads.
 */
 process  PORECHOP_TRIM {
-    publishDir "${params.outdir}", mode: 'copy'
     tag "Trim Reads"
 
   input:
@@ -73,8 +71,7 @@ process  PORECHOP_TRIM {
 
 // Post Adaptor Removal Quality Check
 process POST_TRIM_NANOPLOT_QC {
-    publishDir "${params.outdir}/postQCOutput", mode: 'copy'
-    tag "Quality Check"
+    tag "Post-trim Quality Check"
     
     input:
       path trimmedFastqFile
@@ -94,7 +91,7 @@ process POST_TRIM_NANOPLOT_QC {
 
 // Post Adopter Removal MultiQC
 process POST_TRIM_MULTIQC_REPORT {
-    publishDir "${params.outdir}/post_multiqcOutput", mode:'copy'
+    publishDir "${params.outdir}", mode:'copy'
     tag 'QC Report Aggregate'
 
     input:
@@ -112,7 +109,7 @@ process POST_TRIM_MULTIQC_REPORT {
 /*
 * Process 3a: Downloading reference rRNA database from
 * https://github.com/biocore/sortmerna/archive/2.1b.zip
-* using download_rnadb.sh a custome script in bin 
+* using download_rnadb.sh a custom script in bin 
 * directory
 */
 process DOWNLOAD_rRNADATABASE {
@@ -132,7 +129,6 @@ process DOWNLOAD_rRNADATABASE {
 * using the downloaded rRNA database
 */
 process SORTMERNA {
-    publishDir "${params.outdir}/sortmernaOutput", mode:'copy'
     tag 'Sorting'
   input:
     path rnaDB
@@ -155,8 +151,8 @@ process SORTMERNA {
     --ref ${rnaDB[4]} \
     --ref ${rnaDB[5]} \
     -reads ${trimmedReadFile} \
-    --aligned seqrRNA/${filename}_rRNA \
-    --fastx --other seqmRNA/${filename}_mRNA 
+    --aligned seqrRNA/${filename} \
+    --fastx --other seqmRNA/${filename} 
   """
   }
 
@@ -165,7 +161,6 @@ process SORTMERNA {
 * families using isOnCLust tool
 */
 process ISONCLUST {
-  publishDir "${params.outdir}/isonclustOuput", mode:'copy'
   tag "Gene Families Clustering"
 
   input:
@@ -196,17 +191,16 @@ process ISONCLUST {
 * exon variation within reads using isOnCorrect tool
 */
 process ISONCORRECT {
-  publishDir "${params.outdir}/correctedReads", mode:'copy'
   tag "Reads Error correction"
 
   input:
     path(readsDir)
   
   output:
-    path "${dirName}_corrected_reads.fastq"
+    path "${name}.fastq"
 
   script:
-    dirName = readsDir.simpleName
+    name = readsDir.simpleName
 
   """
   run_isoncorrect \
@@ -214,10 +208,10 @@ process ISONCORRECT {
   --t 4 \
   --k 13 \
   --w 20 \
-  --outfolder "${dirName}_corrected"
+  --outfolder "${name}"
 
-  cat ${dirName}_corrected/*/corrected_reads.fastq \
-  > "${dirName}_corrected_reads.fastq"
+  cat ${name}/*/corrected_reads.fastq \
+  > "${name}.fastq"
 """
 }
 
@@ -229,7 +223,6 @@ process ISONCORRECT {
 */
 // 6a: Downloading the reference genome sequence for minimap2
 process REFSEQ_GCF_016920715_DOWNLOAD {
-    publishDir "${params.outdir}/refSeqGenome", mode:'copy'
     tag "Reference Seq Genome Downlooad"
 
     output:
@@ -249,29 +242,17 @@ process REFSEQ_GCF_016920715_DOWNLOAD {
 // 6b: Mapping to the reference genome sequence
 process MINIMAP2 {
   tag "Mapping to ref genome"
-    publishDir "${params.outdir}/minimapOuput", mode:'copy'
 
     input:
     path correctedReads
     path(refSeqIndexed)
 
     output:
-    path "*_sorted.bam"
+    path "*.bam"
 
     script:
     filename = correctedReads.simpleName
 
-    /*
-     minimap2 \
-    -ax splice \
-    -k13 ${refSeqIndexed} ${correctedReads} \
-    -o ${filename}.aln.sam
-
-    samtools view -bS ${filename}.aln.sam > ${filename}.bam 
-    samtools sort ${filename}.bam > "${filename}_mapped.bam"
-    samtools sort ${filename}_mapped.bam > "${filename}_sorted.bam"
-    samtools index ${filename}_sorted.bam "${filename}_idx.bam
-    */
     """
     minimap2 \
     -t 4 \
@@ -279,7 +260,7 @@ process MINIMAP2 {
     -p 0 \
     -N 10 ${refSeqIndexed} ${correctedReads} | \
     samtools view -bh | \
-    samtools sort > "${filename}_sorted.bam"
+    samtools sort > "${filename}.bam"
     """
 }
 
@@ -289,78 +270,28 @@ process MINIMAP2 {
 */
 process NANOCOUNT {
   tag "transcripts count"
-      publishDir "${params.outdir}/nanoCount", mode:'copy'
+      publishDir "${params.outdir}", mode:'copy'
 
   input:
-    path indexed_bai_file
+    path bam_file
 
   output:
     path "*.tsv"
 
   script:
-    filename = indexed_bai_file.simpleName
+    filename = bam_file.simpleName
 
   """
   NanoCount \
-  --alignment_file ${indexed_bai_file} \
+  --alignment_file ${bam_file} \
   --count_file "${filename}.trascripts.tsv" \
   --sec_scoring_threshold 0.8 \
   --verbose
   """
 }
+
 /*
 * Process 8
 * HTSeq is a Python package that calculates the number 
 * of mapped reads to each gene.
 */
-
-// ============== START OF ALTERNATIVE CODES ============
-/*
-def rnadb_available( path ) {
-/*
-Searches for 'rRNA_database' dir
-in the project directory and returns
-true when found. Needs the activation of GET_RNADATABASE
-process
-*/ ///////////////////////////////////////
-
-/*
-  myDir = file(path)
-  allFiles = myDir.list()
-
-    for( def file : allFiles ) {
-        if( file == 'rRNA_databases') {
-            return true
-        }
-        else {
-            return false
-            }
-    }
-}
-*\
-
-/*
-* Process 3a
-* Checks whether there is already an existing rRNA database
-* in the projectDir
-
-rnaDatabase = "${projectDir}"
-process  GET_RNADATABASE {
-    tag "Searching for rRNA database "
-    publishDir "${projectDir}", mode: 'copy', overwrite: false
-    
-    output:
-        path 'rRNA_databases/*'
-
-    script:
-    if (rnadb_available(rnaDatabase))
-        """
-        mkdir rRNA_databases
-        """
-    else
-        """
-        getRNAdb.sh
-        """
-}
-*/
-// ======================= END =========================

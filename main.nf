@@ -28,7 +28,7 @@ nextflow.enable.dsl = 2
  * Define the default parameters
  */ 
 params.readsDir = "$projectDir/data"
-params.outdir = "ONTresults"
+params.outdir = "results"
 
 log.info """\
 
@@ -42,7 +42,6 @@ log.info """\
 /* 
  * Import modules 
 */
-
  include { 
       NANOPLOT_QC;
       MULTIQC_REPORT;
@@ -58,7 +57,6 @@ log.info """\
       NANOCOUNT
   } from './modules/metatranscriptome.nf'
 
-
 /* 
  * main pipeline logic
  */
@@ -69,21 +67,6 @@ log.info """\
       .groupTuple()
       .set { raw_reads_ch }
 
-/*
- the channel is converted into value channell to enable 
- multiple use of the same values without the channel 
- consuming it
-*/
-    // channel
-    // .value(file("${projectDir}/rRNA_databases/*.fasta"))
-    // .collect()
-    // .set { rRNAdatabases }
-
-/*
-    channel
-    .value(file("${params.refGenome}"))
-    .set { refSeq_ch }
-*/
     // Section 1a: Quality Checking
     NANOPLOT_QC(raw_reads_ch)
     
@@ -94,7 +77,6 @@ log.info """\
   
     // Section 2: ONT adaptor removal
     PORECHOP_TRIM(params.readsDir)
-    //PORECHOP_TRIM.out.flatten().view()
     
     //Run qc for the trimmed reads
     POST_TRIM_NANOPLOT_QC(PORECHOP_TRIM.out.flatten())
@@ -106,12 +88,11 @@ log.info """\
         POST_TRIM_NANOPLOT_QC.out.collect()
         )
 
-    // Section 3a: Download rRNA database. Need internet connection
+    // Section 3a: Download reference rRNA databases
     DOWNLOAD_rRNADATABASE()
 
     // Section 3b: rRNA fragments filtering
     SORTMERNA(DOWNLOAD_rRNADATABASE.out.collect(),
-              //rRNAdatabases,
               PORECHOP_TRIM.out.flatten()
               )
 
@@ -133,7 +114,6 @@ log.info """\
             )
     // Section 7: Transcript abundance estimation
     NANOCOUNT(MINIMAP2.out)
-    //NANOCOUNT.out.view()
 
     // section 8: Calculating the number of mapped reads to each gene
  }
