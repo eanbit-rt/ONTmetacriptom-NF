@@ -71,6 +71,44 @@ process  PORECHOP_TRIM {
   """
 }
 
+// Post Adaptor Removal Quality Check
+process POST_TRIM_NANOPLOT_QC {
+    publishDir "${params.outdir}/postQCOutput", mode: 'copy'
+    tag "Quality Check"
+    
+    input:
+      path trimmedFastqFile
+    output:
+        path "${dirName}_without_Adapters"
+
+    script:
+      dirName = trimmedFastqFile.simpleName
+    """
+    NanoPlot \
+    --threads 4 \
+    --outdir "${dirName}_without_Adapters" \
+    --prefix ${dirName} \
+    --fastq ${trimmedFastqFile}
+    """
+}
+
+// Post Adopter Removal MultiQC
+process POST_TRIM_MULTIQC_REPORT {
+    publishDir "${params.outdir}/post_multiqcOutput", mode:'copy'
+    tag 'QC Report Aggregate'
+
+    input:
+    path '*'
+    
+    output:
+    path 'Post_Trim_QC_report.html'
+    
+    script:
+    """
+    multiqc --filename Post_Trim_QC_report.html . 
+    """
+}
+
 /*
 * Process 3a: Downloading reference rRNA database from
 * https://github.com/biocore/sortmerna/archive/2.1b.zip
@@ -109,7 +147,7 @@ process SORTMERNA {
   """
     sortmerna \
     --workdir $PWD/work \
-    --kvdb $filename/kvdb \
+    --kvdb kvdb \
     --ref ${rnaDB[0]} \
     --ref ${rnaDB[1]} \
     --ref ${rnaDB[2]} \
@@ -162,12 +200,14 @@ process ISONCORRECT {
   tag "Reads Error correction"
 
   input:
-    tuple val(dirName), path(readsDir)
+    path(readsDir)
   
   output:
     path "${dirName}_corrected_reads.fastq"
 
   script:
+    dirName = readsDir.simpleName
+
   """
   run_isoncorrect \
   --fastq_folder ${readsDir} \
@@ -237,8 +277,8 @@ process MINIMAP2 {
     -t 4 \
     -ax map-ont \
     -p 0 \
-    -N 10 ${refSeqIndexed} ${correctedReads} | 
-    samtools view -bh | 
+    -N 10 ${refSeqIndexed} ${correctedReads} | \
+    samtools view -bh | \
     samtools sort > "${filename}_sorted.bam"
     """
 }

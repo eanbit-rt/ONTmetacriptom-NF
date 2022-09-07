@@ -29,7 +29,6 @@ nextflow.enable.dsl = 2
  */ 
 params.readsDir = "$projectDir/data"
 params.outdir = "ONTresults"
-params.refGenome = ''
 
 log.info """\
 
@@ -48,6 +47,8 @@ log.info """\
       NANOPLOT_QC;
       MULTIQC_REPORT;
       PORECHOP_TRIM;
+      POST_TRIM_NANOPLOT_QC;
+      POST_TRIM_MULTIQC_REPORT;
       DOWNLOAD_rRNADATABASE;
       SORTMERNA;
       ISONCLUST;
@@ -55,7 +56,7 @@ log.info """\
       REFSEQ_GCF_016920715_DOWNLOAD;
       MINIMAP2;
       NANOCOUNT
-  } from './modules/metatranscriptome.nf' 
+  } from './modules/metatranscriptome.nf'
 
 
 /* 
@@ -73,10 +74,10 @@ log.info """\
  multiple use of the same values without the channel 
  consuming it
 */
-    channel
-    .value(file("${projectDir}/rRNA_databases/*.fasta"))
-    .collect()
-    .set { rRNAdatabases }
+    // channel
+    // .value(file("${projectDir}/rRNA_databases/*.fasta"))
+    // .collect()
+    // .set { rRNAdatabases }
 
 /*
     channel
@@ -94,13 +95,23 @@ log.info """\
     // Section 2: ONT adaptor removal
     PORECHOP_TRIM(params.readsDir)
     //PORECHOP_TRIM.out.flatten().view()
+    
+    //Run qc for the trimmed reads
+    POST_TRIM_NANOPLOT_QC(PORECHOP_TRIM.out.flatten())
+
+    /* Generating final post adapter removal report
+        from POST_TRIM_NANOPLOT_QC process
+    */
+    POST_TRIM_MULTIQC_REPORT(
+        POST_TRIM_NANOPLOT_QC.out.collect()
+        )
 
     // Section 3a: Download rRNA database. Need internet connection
-    //DOWNLOAD_rRNADATABASE()
+    DOWNLOAD_rRNADATABASE()
 
     // Section 3b: rRNA fragments filtering
-    SORTMERNA(//DOWNLOAD_rRNADATABASE.out.collect(),
-              rRNAdatabases,
+    SORTMERNA(DOWNLOAD_rRNADATABASE.out.collect(),
+              //rRNAdatabases,
               PORECHOP_TRIM.out.flatten()
               )
 
@@ -111,9 +122,7 @@ log.info """\
     ISONCLUST(SORTMERNA.out)
 
     //Seciton 5: ONT reads error correction
-    ISONCORRECT(ISONCLUST.out
-    .map{ dirpath -> tuple(dirpath.name, dirpath) }
-    )
+    ISONCORRECT(ISONCLUST.out)
 
     // Section 6a: Download a reference datatabase
     REFSEQ_GCF_016920715_DOWNLOAD()
