@@ -39,5 +39,5 @@ The workflow developed generated below DAG.
 
 ### Containerization and Scalling 
 
-Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. The docker file generated with all workflow tools is located [here](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
-The docker image built can be accesed here [docker](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
+Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings. The docker file generated with all workflow tools is located here [Dockerfile](https://github.com/eanbit-rt/ONTmetacriptom-NF/tree/main/docker).
+The docker image built can be accesed here [docker image](https://hub.docker.com/r/samordil/ont-metatranscriptomics).
