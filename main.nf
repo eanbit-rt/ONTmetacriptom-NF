@@ -116,4 +116,5 @@ log.info """\
     NANOCOUNT(MINIMAP2.out)
 
     // section 8: Calculating the number of mapped reads to each gene
+    // Ongoing process
  }

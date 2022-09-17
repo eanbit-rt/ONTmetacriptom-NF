@@ -1,38 +1,67 @@
 # -----------------------------------------------------------------------
 # Creates a docker image with all the necessary tools needed to run ONT -
-# metatrancriptomic data analysis.				        -
+# metatrancriptomic data analysis.				                        -
 # -----------------------------------------------------------------------
 
-# Base image, a micromamba environment.
-FROM mambaorg/micromamba
+# Base image
+FROM debian:jessie
 
-LABEL version="v1.0.0"
-LABEL name='Group 2 EANBIT icipe 2022'
-LABEL author="samordil@gmail.com"
+# File Author / Maintainer
+LABEL maintainer="Samuel Oduor samordil@gmail.com"
+LABEL description="This is custom Docker Image for \
+    ONT long reads metatrascriptomic data analysis. \
+    and their dependancies"
 
-# Setting the working directory
-WORKDIR /home/mambauser
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH=/opt/conda/bin:$PATH
 
-# installing using micromamba
-RUN micromamba install -y -n base \
- -c conda-forge \
- -c bioconda \
- -c defaults \
-    python=3.9.13 \
-    porechop=0.2.4 \
-    samtools=1.6 \
-    sortmerna=4.3.4 \
-    isonclust=0.0.6.1 \
-    minimap2=2.17 \
-    spoa=4.0.7 \
-    && micromamba clean -a -y
+################## BEGIN INSTALLATION ######################
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    time \
+&& \
+    apt-get clean \
+&& \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+&& \
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \ 
+        -O /miniconda.sh \
+&& \
+    /bin/bash /miniconda.sh -b -p /opt/conda \
+&& \
+    rm /miniconda.sh \
+&& \
+    conda install -y -n base \
+        -c conda-forge \
+        -c bioconda \
+        -c defaults \
+        pip=22.1.2 \
+        python=3.9.13 \
+        porechop=0.2.4 \
+        samtools=1.6 \
+        sortmerna=4.3.4 \
+        isonclust=0.0.6.1 \
+        minimap2=2.17 \
+        spoa=4.0.7 \
+&& \ 
+    conda clean -a -y \
+&& \
+    /opt/conda/bin/pip install \
+        NanoPlot==1.40.0 \
+        multiqc==1.13 \ 
+        isONcorrect==0.0.8 \
+        NanoCount==1.0.0post6 \
+&& \
+    /opt/conda/bin/pip cache purge \
+&& \
+    useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 
-# Installing using pip
-RUN /opt/conda/bin/pip install \
- NanoPlot==1.40.0 \
- multiqc==1.12 \ 
- isONcorrect==0.0.8 \
- NanoCount==1.0.0post6
+USER docker
 
-# Clean after pip 
-RUN /opt/conda/bin/pip cache purge
+RUN echo "source activate" >> ~/.bashrc 
+
+# To add a new user to the system
+# RUN useradd --create-home --shell /bin/bash jessie && \
+#   chown -R jessie:jessie /home/jessie
+# USER jessie

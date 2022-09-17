@@ -6,12 +6,12 @@ nextflow.enable.dsl = 2
  * Process 1A: Checking the quality of the ONT reads 
  * with NanoPlot
  * Takes a list of sequences per barcode and processes 
- * then to produce single reports/stats per barcode
+ * them to produce single reports/stats per barcode
  */
 process NANOPLOT_QC {
     tag "Pre-trim Quality Check"
     
-    input:
+    input: 
       tuple(val(name),  path(fastqFile))
     output:
         path "${name}"
@@ -142,8 +142,6 @@ process SORTMERNA {
 
   """
     sortmerna \
-    --workdir $PWD/work \
-    --kvdb kvdb \
     --ref ${rnaDB[0]} \
     --ref ${rnaDB[1]} \
     --ref ${rnaDB[2]} \
@@ -151,8 +149,12 @@ process SORTMERNA {
     --ref ${rnaDB[4]} \
     --ref ${rnaDB[5]} \
     -reads ${trimmedReadFile} \
+    --workdir $PWD/work \
+    --kvdb kvdb \
+    -threads 4 \
     --aligned seqrRNA/${filename} \
-    --fastx --other seqmRNA/${filename} 
+    --fastx --other seqmRNA/${filename} \
+    
   """
   }
 
@@ -205,7 +207,7 @@ process ISONCORRECT {
   """
   run_isoncorrect \
   --fastq_folder ${readsDir} \
-  --t 4 \
+  --t 3 \
   --k 13 \
   --w 20 \
   --outfolder "${name}"
@@ -294,4 +296,5 @@ process NANOCOUNT {
 * Process 8
 * HTSeq is a Python package that calculates the number 
 * of mapped reads to each gene.
+* Ongoing process
 */

@@ -23,11 +23,13 @@ and results highly reproducible.
 * NanoPlot
 * mutiqc
 * porechop
+* samtools
 * sortmerna
 * isonclust
+* spoa
 * isoncorrect
 * minimap2
-* Nanocount
+* NanoCount
 
 ## Quick Start
 1. Install [Nexflow](https://www.nextflow.io/docs/latest/getstarted.html#installation) (>=22.04.5)
