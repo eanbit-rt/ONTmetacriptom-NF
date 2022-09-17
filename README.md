@@ -20,16 +20,18 @@ and results highly reproducible.
 
 ## Components 
 **ONTmetacriptom-NF** uses the following software components and tools: 
-* NanoPlot
-* mutiqc
-* porechop
-* samtools
-* sortmerna
-* isonclust
-* spoa
-* isoncorrect
-* minimap2
-* NanoCount
+* python=3.9.13
+* pip=22.1.2
+* NanoPlot 1.40.0
+* mutiqc 1.13
+* porechop 0.2.4
+* samtools 1.6
+* sortmerna 4.3.4
+* isonclust 0.0.6.1
+* spoa 4.0.7
+* isoncorrect 0.0.8
+* minimap2 2.17
+* NanoCount 1.0.0post6
 
 ## Quick Start
 1. Install [Nexflow](https://www.nextflow.io/docs/latest/getstarted.html#installation) (>=22.04.5)
