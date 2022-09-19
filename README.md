@@ -45,20 +45,21 @@ nextflow run main.nf
 ```
 nextflow run main.nf --readsDir '/path/to/dir_Containing_your_barcodes'
 ```
+
 ### To run a pipeline from a GitHub repository, 
 1. You can run it by specifying the project name as shown below to test the pipeline:
 ```
-nextflow run ONTmetacriptom-NF --readsDir '/path/to/dir_Containing_your_barcodes'
+nextflow run eanbit-rt/ONTmetacriptom-NF
 ```
 2. To run the pipeline with your dataset.
 ```
-nextflow run ONTmetacriptom-NF --readsDir '/path/to/dir_Containing_your_barcodes'
+nextflow run eanbit-rt/ONTmetacriptom-NF --readsDir '/path/to/dir_Containing_your_barcodes'
 ```
 It automatically downloads it and store in the $HOME/.nextflow folder.
 
 Use the command info to show the project information, e.g.:
 ```
-nextflow info ONTmetacriptom-NF
+nextflow info eanbit-rt/ONTmetacriptom-NF
 ```
 ## Credits
 We thank the following people for their extensive assistance in the development of this pipeline (in alphabetical order):
