@@ -66,6 +66,8 @@ We thank the following people for their extensive assistance in the development 
 - [Fedrick Kebaso](https://github.com/fredrickkebaso)
 - [Samuel Oduor](https://github.com/samordil)
 - [Stephen Kuria](https://github.com/sephoh)
+- [Manase Aloo](https://github.com/manasealoo)
+- [Mark Tefero Kivumbi](https://github.com/tefer0)
 
 ## References
 These literatures shed more light on the background theories and concepts that were adapted to advance our methodology.
