@@ -16,7 +16,9 @@
  * 
  * Fedrick Kebaso
  * Samuel Oduor
- * Stephen Kuria 
+ * Stephen Kuria
+ * Manase Aloo
+ * Mark Tefero Kivumbi
  */
 
 /* 
